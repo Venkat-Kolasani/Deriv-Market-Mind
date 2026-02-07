@@ -20,9 +20,7 @@ export default function Home() {
 
   const [marketData, setMarketData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
   const [dataReady, setDataReady] = useState(false);
-
   const pricesRef = useRef<Record<string, number>>({});
 
   // ================= SYMBOL DEFINITIONS =================
@@ -96,12 +94,6 @@ export default function Home() {
       setDataReady(true);
       setLoading(false);
     };
-
-    ws.onerror = () => {
-      setError(true);
-      setLoading(false);
-    };
-
     return () => ws.close();
   }, []);
 
@@ -170,14 +162,6 @@ export default function Home() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-black text-white">
         Loading market data...
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-black text-red-500">
-        Failed to load market data
       </div>
     );
   }
@@ -255,18 +239,34 @@ export default function Home() {
 
       {/* FEATURES */}
       <section className="py-32 px-6">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
-          {features.map((feature, index) => (
+          <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
+
             <FeatureCard
-              key={feature.id}
-              title={feature.title}
-              description={feature.description}
-              icon={feature.icon}
-              delay={index * 0.1}
+              title="Smart Market Analysis"
+              description="We explain price moves in plain English..."
+              icon="brain"
+              href="/smart-market-analysis"
+              delay={0}
             />
-          ))}
-        </div>
-      </section>
+
+            <FeatureCard
+              title="Behavioral Nudges"
+              description="Detect emotional trading before it hurts you..."
+              icon="shield"
+              href="/behavioural-nudges"
+              delay={0.1}
+            />
+
+            <FeatureCard
+              title="Social Auto-Pilot"
+              description="Turn insights into viral trading content..."
+              icon="share"
+              href="/social-auto-pilot"
+              delay={0.2}
+            />
+
+          </div>
+        </section>
     </main>
   );
 }
