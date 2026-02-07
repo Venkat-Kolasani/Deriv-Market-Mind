@@ -93,6 +93,20 @@ Deriv-Market-Mind/
 - **Purpose:** Displays solution features with icons
 - **Icons:** Lucide React (`Brain`, `Shield`, `Share2`)
 
+### 5. Dashboard Components (Phase 2)
+- **TradingChart**: 
+  - Interactive Recharts AreaChart with gradient fill. Mimics professional trading terminals.
+  - Supports mock timeframe switching (1H, 4H, 1D).
+- **AiInsightStream**: 
+  - Chat-interface for AI market analysis.
+  - Distinguishes "Facts" (Blue) from behavioral "Warnings" (Orange).
+- **TiltMeter**: 
+  - SVG-based semi-circle gauge visualizing user's emotional state (`tiltScore`).
+  - Animated needle/arc.
+- **LiveEventFeed**: 
+  - Real-time list of market events (News, Volume Spikes).
+
+
 ---
 
 ## Tech Stack

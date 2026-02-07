@@ -298,3 +298,67 @@ export const majorIndices = [
     { symbol: 'FTSE 100', value: 10369.75, change: 0.59, sparkline: generateSparkline('up') },
     { symbol: 'DAX', value: 24721.46, change: 0.94, sparkline: generateSparkline('up') },
 ];
+
+// --- DASHBOARD DATA ---
+
+export interface AiInsight {
+    id: string;
+    type: 'fact' | 'warning';
+    title: string;
+    content: string;
+    timestamp: string;
+}
+
+export const aiInsights: AiInsight[] = [
+    {
+        id: '1',
+        type: 'fact',
+        title: 'Market Fact',
+        content: 'EUR/USD volume is up 20% compared to the 30-day average. Institutional buying detected.',
+        timestamp: '2 min ago'
+    },
+    {
+        id: '2',
+        type: 'warning',
+        title: 'Behavioral Warning',
+        content: 'You are trading too fast! Your order frequency has spiked. Consider taking a 5-minute break.',
+        timestamp: 'Just now'
+    },
+    {
+        id: '3',
+        type: 'fact',
+        title: 'Support Level',
+        content: 'Key support level at 1.0850 holds strong. 3 failed breakout attempts observed.',
+        timestamp: '15 min ago'
+    },
+    {
+        id: '4',
+        type: 'warning',
+        title: 'Tilt Alert',
+        content: 'Consecutive losses detected on XAU/USD. Risk of emotional decision making.',
+        timestamp: '1 hour ago'
+    }
+];
+
+export interface LiveEvent {
+    id: string;
+    type: 'news' | 'uptrade' | 'downtrade';
+    message: string;
+    timestamp: string;
+}
+
+export const liveEvents: LiveEvent[] = [
+    { id: '1', type: 'uptrade', message: 'EUR/USD spiked 20 pips on high volume', timestamp: '10:42 AM' },
+    { id: '2', type: 'news', message: 'US CPI Data released: 3.2% vs 3.1% expected', timestamp: '10:30 AM' },
+    { id: '3', type: 'downtrade', message: 'Gold (XAU/USD) breaks below 2020 support', timestamp: '10:15 AM' },
+    { id: '4', type: 'uptrade', message: 'BTC/USD reclaims $68,000 level', timestamp: '09:55 AM' },
+    { id: '5', type: 'news', message: 'ECB President Lagarde scheduled to speak', timestamp: '09:00 AM' },
+];
+
+export const userStats = {
+    name: 'Alex Trader',
+    balance: '$24,500.00',
+    dayPnL: '+$450.20 (+1.8%)',
+    tiltScore: 15, // 0-100, where 100 is max tilt
+    status: 'Stable'
+};
