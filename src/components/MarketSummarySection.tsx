@@ -1,149 +1,129 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import IndexChart from './IndexChart';
 
-/**
- * TYPE DATA DARI API
- */
-export type MajorIndexItem = {
-  symbol: string;
-  value: number;
-  change: number;
-};
-
-export type MarketSummaryData = {
-  mainIndex: {
+type IndexSummary = {
+  main: {
     name: string;
     symbol: string;
     value: number;
-    change: number;
+    currency: string;
+    changePercent: number;
   };
-  majorIndices: MajorIndexItem[];
+  others: {
+    name: string;
+    symbol: string;
+    value: number;
+    changePercent: number;
+  }[];
 };
 
-/**
- * MarketSummarySection
- * API-driven Market Summary
- */
 export default function MarketSummarySection({
-  data
+  data,
 }: {
-  data?: MarketSummaryData;
+  data: IndexSummary;
 }) {
-  // === HANDLE LOADING STATE ===
-  if (!data) {
-    return (
-      <div className="card p-6 lg:p-8 text-[var(--text-muted)]">
-        Loading market summary...
-      </div>
-    );
-  }
+  if (!data) return null;
 
-  const main = data.mainIndex;
+  const isPositive = data.main.changePercent >= 0;
 
   return (
-    <div className="card p-6 lg:p-8">
+    <div className="card p-6 lg:p-8 bg-neutral-900/60 border border-neutral-800 rounded-xl">
       <div className="flex flex-col lg:flex-row gap-8">
-
-        {/* LEFT COLUMN: Main Index */}
+        {/* ================= LEFT: MAIN INDEX ================= */}
         <div className="flex-1">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-full bg-[#ef4444] flex items-center justify-center text-white font-bold text-sm">
+            <div className="w-10 h-10 rounded-full bg-red-500 flex items-center justify-center text-white font-bold text-sm">
               500
             </div>
+
             <div>
               <div className="flex items-baseline gap-2">
                 <h3 className="text-2xl font-bold text-white">
-                  {main.name}
+                  {data.main.name}
                 </h3>
-                <span className="text-[var(--text-muted)] text-sm uppercase tracking-wider">
-                  {main.symbol}
+                <span className="text-gray-400 text-sm uppercase tracking-wider">
+                  {data.main.symbol}
                 </span>
               </div>
-              <div className="flex items-center gap-2">
+
+              <div className="flex items-center gap-3">
                 <span className="text-3xl font-bold text-white">
-                  {main.value.toLocaleString('en-US', {
-                    minimumFractionDigits: 2
-                  })}
+                  {data.main.value.toLocaleString()}
                 </span>
-                <span className="text-[var(--text-muted)] text-sm">
-                  USD
+                <span className="text-gray-400 text-sm">
+                  {data.main.currency}
                 </span>
                 <span
                   className={`font-bold text-lg ${
-                    main.change >= 0
-                      ? 'text-[var(--signal-green)]'
-                      : 'text-[var(--signal-red)]'
+                    isPositive ? 'text-green-500' : 'text-red-500'
                   }`}
                 >
-                  {main.change >= 0 ? '+' : ''}
-                  {main.change}%
+                  {isPositive ? '+' : ''}
+                  {data.main.changePercent.toFixed(2)}%
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Chart (still unchanged) */}
-          <IndexChart />
+          {/* ================= CHART PLACEHOLDER ================= */}
+          <div className="h-[280px] rounded-lg bg-black border border-neutral-800 flex items-center justify-center text-neutral-500">
+            Chart placeholder (API-ready)
+          </div>
         </div>
 
-        {/* RIGHT COLUMN: Major Indices */}
-        <div className="w-full lg:w-[320px] border-l border-[var(--border-dark)] pl-0 lg:pl-8 pt-8 lg:pt-0">
+        {/* ================= RIGHT: MAJOR INDICES ================= */}
+        <div className="w-full lg:w-[320px] border-l border-neutral-800 pl-0 lg:pl-8 pt-8 lg:pt-0">
           <h3 className="text-lg font-bold text-white mb-6">
             Major indices
           </h3>
 
-          <div className="space-y-6">
-            {data.majorIndices.map((index) => {
-              const isPositive = index.change >= 0;
+          <div className="space-y-5">
+            {data.others.map((index) => {
+              const up = index.changePercent >= 0;
 
               return (
                 <motion.div
                   key={index.symbol}
                   whileHover={{ x: 5 }}
-                  className="group cursor-pointer"
+                  className="flex items-center justify-between cursor-pointer"
                 >
-                  <div className="flex items-center justify-between mb-1">
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-full bg-[var(--border-subtle)] flex items-center justify-center text-[10px] text-white">
-                        {index.symbol.substring(0, 2)}
-                      </div>
-                      <div>
-                        <p className="font-bold text-sm text-white group-hover:text-[var(--accent-blue)] transition-colors">
-                          {index.symbol}
-                        </p>
-                        <span className="text-[10px] bg-[var(--border-subtle)] text-[var(--text-muted)] px-1 rounded">
-                          INDEX
-                        </span>
-                      </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-neutral-800 flex items-center justify-center text-xs text-white">
+                      {index.symbol.slice(0, 2)}
                     </div>
-                    <div className="text-right">
-                      <p className="font-mono text-sm text-white font-bold">
-                        {index.value.toLocaleString('en-US', {
-                          minimumFractionDigits: 2
-                        })}
+
+                    <div>
+                      <p className="text-sm font-bold text-white">
+                        {index.name}
                       </p>
-                      <p
-                        className={`text-xs font-semibold ${
-                          isPositive
-                            ? 'text-[var(--signal-green)]'
-                            : 'text-[var(--signal-red)]'
-                        }`}
-                      >
-                        {isPositive ? '+' : ''}
-                        {index.change}%
-                      </p>
+                      <span className="text-xs text-neutral-500">
+                        INDEX
+                      </span>
                     </div>
+                  </div>
+
+                  <div className="text-right">
+                    <p className="font-mono text-sm font-bold text-white">
+                      {index.value.toLocaleString()}
+                    </p>
+                    <p
+                      className={`text-xs font-semibold ${
+                        up ? 'text-green-500' : 'text-red-500'
+                      }`}
+                    >
+                      {up ? '+' : ''}
+                      {index.changePercent.toFixed(2)}%
+                    </p>
                   </div>
                 </motion.div>
               );
             })}
           </div>
 
-          <div className="mt-8 pt-6 border-t border-[var(--border-dark)]">
-            <button className="text-[var(--accent-blue)] text-sm font-semibold hover:underline">
-              See all major indices ›
+          <div className="mt-8 pt-6 border-t border-neutral-800">
+            <button className="text-blue-500 text-sm font-semibold hover:underline">
+              See all major indices →
             </button>
           </div>
         </div>
