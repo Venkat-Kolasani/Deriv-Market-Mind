@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import StockTable from './StockTable';
 
@@ -12,65 +12,65 @@ export type MarketItem = {
   name: string;
   price: number;
   changePercent: number;
-  marketCap: number;
-  volume: number;
-  signal: string;
-  trend: number[];
+  marketCap?: number;
+  volume?: number;
+  signal?: string;
+  trend?: number[];
 };
 
 interface MarketDataGridProps {
   category: CategoryType;
+  data?: Record<CategoryType, MarketItem[]>;
 }
 
-export default function MarketDataGrid({ category }: MarketDataGridProps) {
+export default function MarketDataGrid({
+  category,
+  data,
+}: MarketDataGridProps) {
   const [activeTab, setActiveTab] = useState<TabType>('volume');
-  const [data, setData] = useState<MarketItem[]>([]);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function fetchMarketTable() {
-      try {
-        setLoading(true);
+  // ===== GUARD =====
+  if (!data || !data[category]) {
+    return (
+      <div className="text-center py-24 text-neutral-500">
+        Loading market data…
+      </div>
+    );
+  }
 
-        const res = await fetch(
-          `/api/market/list?category=${category}&type=${activeTab}`
-        );
-
-        if (!res.ok) throw new Error('API error');
-
-        const json = await res.json();
-        setData(json.items);
-      } catch (error) {
-        console.error('Failed to fetch market table:', error);
-        setData([]);
-      } finally {
-        setLoading(false);
-      }
+  // ===== SORT LOGIC =====
+  const sortedData = [...data[category]].sort((a, b) => {
+    switch (activeTab) {
+      case 'gainers':
+        return b.changePercent - a.changePercent;
+      case 'losers':
+        return a.changePercent - b.changePercent;
+      case 'volume':
+      default:
+        return (b.volume ?? 0) - (a.volume ?? 0);
     }
-
-    fetchMarketTable();
-  }, [category, activeTab]);
+  });
 
   return (
     <div className="w-full">
       {/* ================= TABS ================= */}
       <div className="flex gap-2 mb-6 border-b border-neutral-800 pb-1">
         <TabButton
+          label="Highest Volume"
           active={activeTab === 'volume'}
           onClick={() => setActiveTab('volume')}
-          label="Highest Volume"
           color="blue"
         />
         <TabButton
+          label="Top Gainers"
           active={activeTab === 'gainers'}
           onClick={() => setActiveTab('gainers')}
-          label="Top Gainers"
           color="green"
         />
         <TabButton
+          label="Top Losers"
           active={activeTab === 'losers'}
           onClick={() => setActiveTab('losers')}
-          label="Top Losers"
           color="red"
         />
       </div>
@@ -78,27 +78,15 @@ export default function MarketDataGrid({ category }: MarketDataGridProps) {
       {/* ================= TABLE ================= */}
       <div className="min-h-[420px]">
         <AnimatePresence mode="wait">
-          {loading ? (
-            <motion.div
-              key="loading"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="text-center py-24 text-neutral-500"
-            >
-              Loading market data…
-            </motion.div>
-          ) : (
-            <motion.div
-              key={activeTab}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.25 }}
-            >
-              <StockTable stocks={data} />
-            </motion.div>
-          )}
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.25 }}
+          >
+            <StockTable stocks={sortedData} />
+          </motion.div>
         </AnimatePresence>
       </div>
 

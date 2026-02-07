@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import IndexChart from './IndexChart';
 
 /**
- * TYPES (MATCH Home.tsx)
+ * TYPE DATA DARI API
  */
 export type MajorIndexItem = {
   symbol: string;
@@ -45,14 +45,12 @@ export default function MarketSummarySection({
   }
 
   const main = data.mainIndex;
-  const mainChange = main.change ?? 0;
-  const mainPositive = mainChange >= 0;
 
   return (
     <div className="card p-6 lg:p-8">
       <div className="flex flex-col lg:flex-row gap-8">
 
-        {/* ================= LEFT: MAIN INDEX ================= */}
+        {/* LEFT: MAIN INDEX */}
         <div className="flex-1">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-10 h-10 rounded-full bg-[#ef4444] flex items-center justify-center text-white font-bold text-sm">
@@ -82,23 +80,23 @@ export default function MarketSummarySection({
 
                 <span
                   className={`font-bold text-lg ${
-                    mainPositive
+                    (main.change ?? 0) >= 0
                       ? 'text-[var(--signal-green)]'
                       : 'text-[var(--signal-red)]'
                   }`}
                 >
-                  {mainPositive ? '+' : ''}
-                  {mainChange.toFixed(2)}%
+                  {(main.change ?? 0) >= 0 ? '+' : ''}
+                  {(main.change ?? 0).toFixed(2)}%
                 </span>
               </div>
             </div>
           </div>
 
-          {/* ================= CHART ================= */}
+          {/* CHART */}
           <IndexChart />
         </div>
 
-        {/* ================= RIGHT: MAJOR INDICES ================= */}
+        {/* RIGHT: MAJOR INDICES */}
         <div className="w-full lg:w-[320px] border-l border-[var(--border-dark)] pl-0 lg:pl-8 pt-8 lg:pt-0">
           <h3 className="text-lg font-bold text-white mb-6">
             Major indices
@@ -109,7 +107,7 @@ export default function MarketSummarySection({
               const value =
                 typeof index.value === 'number' ? index.value : 0;
               const change = index.change ?? 0;
-              const positive = change >= 0;
+              const isPositive = change >= 0;
 
               return (
                 <motion.div
@@ -142,12 +140,12 @@ export default function MarketSummarySection({
 
                       <p
                         className={`text-xs font-semibold ${
-                          positive
+                          isPositive
                             ? 'text-[var(--signal-green)]'
                             : 'text-[var(--signal-red)]'
                         }`}
                       >
-                        {positive ? '+' : ''}
+                        {isPositive ? '+' : ''}
                         {change.toFixed(2)}%
                       </p>
                     </div>

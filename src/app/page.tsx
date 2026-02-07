@@ -1,29 +1,16 @@
 'use client';
 
-<<<<<<< HEAD
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Activity, BarChart2 } from 'lucide-react';
 
-=======
-import { useEffect, useState } from 'react';
-import { Activity, BarChart2 } from 'lucide-react';
->>>>>>> f7ebaa05301695606e27ee6c9bbba62d00d3e43a
 import MarketTicker from '@/components/MarketTicker';
+import FeatureCard from '@/components/FeatureCard';
+import DashboardMockup from '@/components/DashboardMockup';
 import MarketSummarySection from '@/components/MarketSummarySection';
 import MarketDataGrid from '@/components/MarketDataGrid';
+import { features } from '@/lib/mockData';
 
-type MarketData = {
-  ticker: any[];
-  summary: any;
-  grid: {
-    stocks: any[];
-    crypto: any[];
-    forex: any[];
-  };
-};
-
-<<<<<<< HEAD
 type Category = 'stocks' | 'crypto' | 'forex';
 
 export default function Home() {
@@ -79,30 +66,10 @@ export default function Home() {
       name: 'EUR / USD',
       symbol: 'EUR/USD',
       key: 'frxEURUSD'
-=======
-export default function Home() {
-  const [marketData, setMarketData] = useState<MarketData | null>(null);
-  const [activeCategory, setActiveCategory] =
-    useState<'stocks' | 'crypto' | 'forex'>('stocks');
-
-  // =========================
-  // FETCH DATA FROM API
-  // =========================
-  useEffect(() => {
-    async function fetchMarketData() {
-      try {
-        const res = await fetch('/api/market/overview');
-        if (!res.ok) throw new Error('API error');
-        const data = await res.json();
-        setMarketData(data);
-      } catch (error) {
-        console.error('Failed to fetch market data:', error);
-      }
->>>>>>> f7ebaa05301695606e27ee6c9bbba62d00d3e43a
     }
   };
 
-  // ================= WEBSOCKET (RUN ONCE) =================
+  // ================= WEBSOCKET =================
   useEffect(() => {
     const ws = new WebSocket(
       'wss://ws.derivws.com/websockets/v3?app_id=1089'
@@ -126,7 +93,6 @@ export default function Home() {
       if (!data.tick) return;
 
       pricesRef.current[data.tick.symbol] = data.tick.quote;
-
       setDataReady(true);
       setLoading(false);
     };
@@ -139,7 +105,6 @@ export default function Home() {
     return () => ws.close();
   }, []);
 
-<<<<<<< HEAD
   // ================= BUILD UI DATA =================
   useEffect(() => {
     if (!dataReady) return;
@@ -158,24 +123,24 @@ export default function Home() {
       })),
 
       summary: {
-  mainIndex: {
-    name: main.name,
-    symbol: main.symbol,
-    value: pricesRef.current[main.key] ?? 0,
-    change: 0
-  },
-  majorIndices:
-  (activeCategory === 'stocks'
-    ? symbols.stocks
-    : activeCategory === 'crypto'
-    ? symbols.crypto
-    : symbols.forex
-  ).map((item) => ({
-    symbol: item.name,              // ✅ DISPLAY NAME
-    value: pricesRef.current[item.symbol] ?? 0,
-    change: 0
-  }))
-},
+        mainIndex: {
+          name: main.name,
+          symbol: main.symbol,
+          value: pricesRef.current[main.key] ?? 0,
+          change: 0
+        },
+        majorIndices: (
+          activeCategory === 'stocks'
+            ? symbols.stocks
+            : activeCategory === 'crypto'
+            ? symbols.crypto
+            : symbols.forex
+        ).map((item) => ({
+          symbol: item.name, // ✅ FIXED (display name)
+          value: pricesRef.current[item.symbol] ?? 0,
+          change: 0
+        }))
+      },
 
       grid: {
         stocks: symbols.stocks.map((s) => ({
@@ -202,12 +167,6 @@ export default function Home() {
 
   // ================= UI STATES =================
   if (loading) {
-=======
-  // =========================
-  // LOADING STATE
-  // =========================
-  if (!marketData) {
->>>>>>> f7ebaa05301695606e27ee6c9bbba62d00d3e43a
     return (
       <div className="min-h-screen flex items-center justify-center bg-black text-white">
         Loading market data...
@@ -215,7 +174,6 @@ export default function Home() {
     );
   }
 
-<<<<<<< HEAD
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-black text-red-500">
@@ -225,31 +183,21 @@ export default function Home() {
   }
 
   // ================= UI =================
-=======
->>>>>>> f7ebaa05301695606e27ee6c9bbba62d00d3e43a
   return (
-    <main className="min-h-screen bg-black text-white">
-      {/* ================= HEADER ================= */}
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-neutral-800 bg-black/80 backdrop-blur">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-<<<<<<< HEAD
-            <Activity className="w-6 h-6 text-[var(--accent-blue)]" />
-            <span className="font-bold text-white text-lg">
-              Market Dashboard
-            </span>
-=======
-            <Activity className="w-6 h-6 text-blue-500" />
-            <span className="font-bold text-lg">Deriv Market Mind</span>
->>>>>>> f7ebaa05301695606e27ee6c9bbba62d00d3e43a
-          </div>
+    <main className="min-h-screen bg-[var(--pure-black)]">
+      {/* HEADER */}
+      <header className="fixed top-0 left-0 right-0 z-50 border-b border-[var(--border-dark)] bg-[var(--pure-black)]/90 backdrop-blur-md">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center gap-2">
+          <Activity className="w-6 h-6 text-[var(--accent-blue)]" />
+          <span className="font-bold text-white text-lg">
+            Market Dashboard
+          </span>
         </div>
       </header>
 
-<<<<<<< HEAD
       {/* HERO */}
       <section className="relative min-h-screen flex items-center pt-20">
-        <div className="relative z-10 max-w-7xl mx-auto px-6 py-20 w-full">
+        <div className="max-w-7xl mx-auto px-6 py-20 w-full">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <motion.div>
               <h1 className="text-5xl font-bold text-white mb-6">
@@ -295,62 +243,28 @@ export default function Home() {
                 )
               )}
             </div>
-=======
-      {/* ================= HERO ================= */}
-      <section className="pt-24 px-6 max-w-7xl mx-auto">
-        <h1 className="text-5xl font-bold mb-4">
-          Market analysis <br />
-          <span className="text-neutral-400">without the noise.</span>
-        </h1>
-        <p className="text-neutral-400 max-w-xl mb-10">
-          Real-time market data with behavioral intelligence to help traders
-          avoid emotional decisions.
-        </p>
-      </section>
-
-      {/* ================= MARKET TICKER ================= */}
-      <MarketTicker data={marketData.ticker} />
-
-      {/* ================= DASHBOARD ================= */}
-      <section className="py-24 px-6 max-w-7xl mx-auto">
-        <div className="flex items-end justify-between mb-10">
-          <div>
-            <h2 className="text-3xl font-bold flex items-center gap-3">
-              <BarChart2 className="text-blue-500" />
-              Market Dashboard
-            </h2>
-            <p className="text-neutral-400">
-              Real-time global market intelligence.
-            </p>
->>>>>>> f7ebaa05301695606e27ee6c9bbba62d00d3e43a
           </div>
 
-          <div className="flex gap-2">
-            {(['stocks', 'crypto', 'forex'] as const).map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`px-4 py-2 rounded text-sm ${
-                  activeCategory === cat
-                    ? 'bg-blue-500 text-white'
-                    : 'text-neutral-400 hover:text-white'
-                }`}
-              >
-                {cat.toUpperCase()}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* SUMMARY */}
-        <MarketSummarySection data={marketData.summary} />
-
-        {/* DATA GRID */}
-        <div className="mt-16">
+          <MarketSummarySection data={marketData?.summary} />
           <MarketDataGrid
             category={activeCategory}
-            data={marketData.grid}
+            data={marketData?.grid}
           />
+        </div>
+      </section>
+
+      {/* FEATURES */}
+      <section className="py-32 px-6">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
+          {features.map((feature, index) => (
+            <FeatureCard
+              key={feature.id}
+              title={feature.title}
+              description={feature.description}
+              icon={feature.icon}
+              delay={index * 0.1}
+            />
+          ))}
         </div>
       </section>
     </main>

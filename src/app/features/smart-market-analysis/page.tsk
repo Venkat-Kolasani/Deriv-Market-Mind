@@ -1,0 +1,17 @@
+export default function SmartMarketAnalysisPage() {
+  return (
+    <main className="min-h-screen bg-black text-white px-6 py-24">
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-4xl font-bold mb-6">
+          Smart Market Analysis
+        </h1>
+
+        <p className="text-neutral-400 text-lg leading-relaxed">
+          This feature explains real-time market movements in plain English.
+          Instead of charts and jargon, users receive clear insights into
+          what is happening in the market and why.
+        </p>
+      </div>
+    </main>
+  );
+}
