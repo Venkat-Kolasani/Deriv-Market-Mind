@@ -100,11 +100,18 @@ Deriv-Market-Mind/
 - **AiInsightStream**: 
   - Chat-interface for AI market analysis.
   - Distinguishes "Facts" (Blue) from behavioral "Warnings" (Orange).
-- **TiltMeter**: 
-  - SVG-based semi-circle gauge visualizing user's emotional state (`tiltScore`).
-  - Animated needle/arc.
 - **LiveEventFeed**: 
   - Real-time list of market events (News, Volume Spikes).
+
+### 6. Backend API (Next.js API Routes)
+- **Framework:** Next.js API Routes (TypeScript)
+- **Architecture:** Serverless functions with WebSocket clients
+- **Key Route:** `/api/market/overview`
+  - Real-time Deriv WebSocket connection (`wss://ws.derivws.com`)
+  - Fetches live ticks for BTC/USD and EUR/USD
+  - Returns structured market data for frontend consumption
+- **App ID:** 1089 (Deriv test environment)
+
 
 
 ---
