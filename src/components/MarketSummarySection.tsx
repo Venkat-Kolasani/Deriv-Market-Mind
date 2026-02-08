@@ -69,7 +69,7 @@ export default function MarketSummarySection({
 
               <div className="flex items-center gap-2">
                 <span className="text-3xl font-bold text-white">
-                  {main.value.toLocaleString('en-US', {
+                  {(main.value ?? 0).toLocaleString('en-US', {
                     minimumFractionDigits: 2
                   })}
                 </span>
@@ -79,11 +79,10 @@ export default function MarketSummarySection({
                 </span>
 
                 <span
-                  className={`font-bold text-lg ${
-                    (main.change ?? 0) >= 0
+                  className={`font-bold text-lg ${(main.change ?? 0) >= 0
                       ? 'text-[var(--signal-green)]'
                       : 'text-[var(--signal-red)]'
-                  }`}
+                    }`}
                 >
                   {(main.change ?? 0) >= 0 ? '+' : ''}
                   {(main.change ?? 0).toFixed(2)}%
@@ -139,11 +138,10 @@ export default function MarketSummarySection({
                       </p>
 
                       <p
-                        className={`text-xs font-semibold ${
-                          isPositive
+                        className={`text-xs font-semibold ${isPositive
                             ? 'text-[var(--signal-green)]'
                             : 'text-[var(--signal-red)]'
-                        }`}
+                          }`}
                       >
                         {isPositive ? '+' : ''}
                         {change.toFixed(2)}%

@@ -1,9 +1,9 @@
 'use client';
 
-import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, Tooltip, TooltipProps } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
 import { mainIndexHistory } from '@/lib/mockData';
 
-const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>) => {
+const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
         return (
             <div className="bg-[var(--card-black)] border border-[var(--border-dark)] p-3 rounded-lg shadow-xl">

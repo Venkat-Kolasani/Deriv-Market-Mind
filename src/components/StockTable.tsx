@@ -3,10 +3,9 @@
 import { motion } from 'framer-motion';
 import { ResponsiveContainer, LineChart, Line } from 'recharts';
 import { ArrowUpRight, ArrowDownRight } from 'lucide-react';
-import { type StockItem } from '@/lib/mockData';
 
 interface StockTableProps {
-  stocks?: StockItem[];
+  stocks?: any[];
 }
 
 export default function StockTable({ stocks = [] }: StockTableProps) {
@@ -53,7 +52,7 @@ export default function StockTable({ stocks = [] }: StockTableProps) {
                 ? stock.sparkline
                 : [stock.price, stock.price];
 
-            const chartData = sparkline.map((value, i) => ({
+            const chartData = sparkline.map((value: number, i: number) => ({
               value,
               i
             }));
@@ -97,11 +96,10 @@ export default function StockTable({ stocks = [] }: StockTableProps) {
                 {/* CHANGE */}
                 <td className="py-4">
                   <div
-                    className={`flex items-center gap-1 font-semibold ${
-                      isPositive
-                        ? 'text-[var(--signal-green)]'
-                        : 'text-[var(--signal-red)]'
-                    }`}
+                    className={`flex items-center gap-1 font-semibold ${isPositive
+                      ? 'text-[var(--signal-green)]'
+                      : 'text-[var(--signal-red)]'
+                      }`}
                   >
                     {isPositive ? (
                       <ArrowUpRight className="w-3 h-3" />
@@ -125,13 +123,12 @@ export default function StockTable({ stocks = [] }: StockTableProps) {
                 {/* SIGNAL */}
                 <td className="py-4 hidden lg:table-cell">
                   <span
-                    className={`inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium border ${
-                      signal.includes('Buy')
-                        ? 'bg-green-900/20 text-green-400 border-green-900/50'
-                        : signal.includes('Sell')
+                    className={`inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium border ${signal.includes('Buy')
+                      ? 'bg-green-900/20 text-green-400 border-green-900/50'
+                      : signal.includes('Sell')
                         ? 'bg-red-900/20 text-red-400 border-red-900/50'
                         : 'bg-gray-800 text-gray-400 border-gray-700'
-                    }`}
+                      }`}
                   >
                     {signal}
                   </span>

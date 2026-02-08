@@ -125,8 +125,8 @@ export default function Home() {
           activeCategory === 'stocks'
             ? symbols.stocks
             : activeCategory === 'crypto'
-            ? symbols.crypto
-            : symbols.forex
+              ? symbols.crypto
+              : symbols.forex
         ).map((item) => ({
           symbol: item.name, // ✅ FIXED (display name)
           value: pricesRef.current[item.symbol] ?? 0,
@@ -171,11 +171,20 @@ export default function Home() {
     <main className="min-h-screen bg-[var(--pure-black)]">
       {/* HEADER */}
       <header className="fixed top-0 left-0 right-0 z-50 border-b border-[var(--border-dark)] bg-[var(--pure-black)]/90 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center gap-2">
-          <Activity className="w-6 h-6 text-[var(--accent-blue)]" />
-          <span className="font-bold text-white text-lg">
-            Market Dashboard
-          </span>
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Activity className="w-6 h-6 text-[var(--accent-blue)]" />
+            <span className="font-bold text-white text-lg">
+              Market Dashboard
+            </span>
+          </div>
+          <a
+            href="/dashboard"
+            className="flex items-center gap-2 px-4 py-2 bg-[var(--accent-blue)] hover:bg-[var(--accent-blue)]/80 text-white font-medium rounded-lg transition-all"
+          >
+            <BarChart2 className="w-4 h-4" />
+            Dashboard
+          </a>
         </div>
       </header>
 
@@ -216,11 +225,10 @@ export default function Home() {
                   <button
                     key={cat}
                     onClick={() => setActiveCategory(cat)}
-                    className={`px-4 py-2 text-sm border rounded-lg ${
-                      activeCategory === cat
+                    className={`px-4 py-2 text-sm border rounded-lg ${activeCategory === cat
                         ? 'text-white border-blue-500'
                         : 'text-gray-400'
-                    }`}
+                      }`}
                   >
                     {cat.toUpperCase()}
                   </button>
@@ -239,34 +247,34 @@ export default function Home() {
 
       {/* FEATURES */}
       <section className="py-32 px-6">
-          <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
 
-            <FeatureCard
-              title="Smart Market Analysis"
-              description="We explain price moves in plain English..."
-              icon="brain"
-              href="/smart-market-analysis"
-              delay={0}
-            />
+          <FeatureCard
+            title="Smart Market Analysis"
+            description="We explain price moves in plain English..."
+            icon="brain"
+            href="/smart-market-analysis"
+            delay={0}
+          />
 
-            <FeatureCard
-              title="Behavioral Nudges"
-              description="Detect emotional trading before it hurts you..."
-              icon="shield"
-              href="/behavioural-nudges"
-              delay={0.1}
-            />
+          <FeatureCard
+            title="Behavioral Nudges"
+            description="Detect emotional trading before it hurts you..."
+            icon="shield"
+            href="/behavioural-nudges"
+            delay={0.1}
+          />
 
-            <FeatureCard
-              title="Social Auto-Pilot"
-              description="Turn insights into viral trading content..."
-              icon="share"
-              href="/social-auto-pilot"
-              delay={0.2}
-            />
+          <FeatureCard
+            title="Social Auto-Pilot"
+            description="Turn insights into viral trading content..."
+            icon="share"
+            href="/social-auto-pilot"
+            delay={0.2}
+          />
 
-          </div>
-        </section>
+        </div>
+      </section>
     </main>
   );
 }
